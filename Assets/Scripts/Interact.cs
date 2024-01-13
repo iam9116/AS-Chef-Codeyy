@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Interact : MonoBehaviour
 {
+    public Stove stove;
+
     public string triggerName = "";
 
     public GameObject breadPrefab;
@@ -15,11 +17,14 @@ public class Interact : MonoBehaviour
     {
         if (Input.GetKeyDown("space"))
         {
+            Debug.Log(triggerName);
+            
             if (triggerName == "Bread")
             {
                 heldItem = Instantiate(breadPrefab, transform, false);
                 heldItem.transform.localPosition = new Vector3(0f, 2f, 1f);
                 heldItemName = "breadSlice";
+                Debug.Log("I have bread");
             }
 
             if (triggerName == "Stove")
@@ -29,10 +34,41 @@ public class Interact : MonoBehaviour
                 if (heldItemName == "breadSlice")
                 {
                     Debug.Log("Ready to toast");
+                    Destroy(heldItem);
+                    stove.ToastBread();
+                    heldItemName = "";
                 }
                 else
                 {
-                    Debug.Log("Codey is empty handed!");
+                    if (stove.cookedFood == "toast")
+                    {
+                        heldItem = Instantiate(breadPrefab, transform, false);
+                        heldItem.transform.localPosition = new Vector3(0, 2, 2);
+                        heldItemName = "toastSlice";
+                        stove.CleanStove();
+                    }
+                }
+            }
+        }
+
+        if (Input.GetKeyDown("space"))
+        {
+            if (triggerName == "Bread")
+            {
+
+            }
+
+            if (triggerName == "Stove")
+            {
+
+            }
+
+            if (triggerName == "Receivers")
+            {
+                if (heldItemName == "toastSlice")
+                {
+                    Destroy(heldItem);
+                    heldItemName = "";
                 }
             }
         }
@@ -40,7 +76,6 @@ public class Interact : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.name);
         triggerName = other.name;
     }
 
