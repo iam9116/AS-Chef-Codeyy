@@ -10,6 +10,7 @@ public class Interact : MonoBehaviour
 
     public GameObject breadPrefab;
     public GameObject eggPrefab;
+    public GameObject friedEggPrefab;
 
     public GameObject heldItem;
     public string heldItemName = "";
@@ -33,22 +34,46 @@ public class Interact : MonoBehaviour
                     stove.ToastBread();
                     PlaceHeldItem();
                 }
+                else if (heldItemName == "egg")
+                {
+                    stove.FryEgg();
+                    PlaceHeldItem();
+                }
                 else
                 {
-                    if (stove.cookedFood == "toast")
+                    if (stove.cookedFood == "toast" && stove.isCooking == false)
                     {
                         PickUpItem(breadPrefab, "toastSlice");
                         stove.CleanStove();
                     }
+                    if (stove.cookedFood == "friedEgg" && stove.isCooking == false)
+                    {
+                        PickUpItem(friedEggPrefab, "friedEgg");
+                        stove.CleanStove();
+                    }
+                }
+
+                if (heldItemName == "egg")
+                {
+                    stove.FryEgg();
+                    PlaceHeldItem();
                 }
             }
             if (triggerName == "Receivers")
             {
-                PlaceHeldItem();
-                GameObject.Find("Receivers/French Toast/toastSlice").SetActive(true);
+               if (heldItemName == "toastSlice")
+               {
+                    PlaceHeldItem();
+                    GameObject.Find("Receivers/French Toast/toastSlice").SetActive(true);
+               }
+               if (heldItemName == "friedEgg")
+               {
+                    PlaceHeldItem();
+                    GameObject.Find("Receivers/French Toast/friedEgg").SetActive(true);
+               }
             }
 
-            if (triggerName == "Egg")
+            if (triggerName == "Sources")
             {
                 PickUpItem(eggPrefab, "egg");
             }
