@@ -19,16 +19,22 @@ public class Interact : MonoBehaviour
     {
         if (Input.GetKeyDown("space"))
         {
-            Debug.Log(triggerName);
+            Debug.Log(heldItemName);
             
             if (triggerName == "Bread")
             {
                 PickUpItem(breadPrefab, "breadSlice");
             }
+
+            if (triggerName == "Sources")
+            {
+                PickUpItem(eggPrefab, "egg");
+            }
+
             if (triggerName == "Stove")
             {
-                Debug.Log("I'm at the stove"); 
-                
+                Debug.Log("I'm at the stove");
+
                 if (heldItemName == "breadSlice")
                 {
                     stove.ToastBread();
@@ -39,6 +45,7 @@ public class Interact : MonoBehaviour
                     stove.FryEgg();
                     PlaceHeldItem();
                 }
+
                 else
                 {
                     if (stove.cookedFood == "toast" && stove.isCooking == false)
@@ -52,13 +59,8 @@ public class Interact : MonoBehaviour
                         stove.CleanStove();
                     }
                 }
-
-                if (heldItemName == "egg")
-                {
-                    stove.FryEgg();
-                    PlaceHeldItem();
-                }
             }
+
             if (triggerName == "Receivers")
             {
                if (heldItemName == "toastSlice")
@@ -72,39 +74,13 @@ public class Interact : MonoBehaviour
                     GameObject.Find("Receivers/French Toast/friedEgg").SetActive(true);
                }
             }
-
-            if (triggerName == "Sources")
-            {
-                PickUpItem(eggPrefab, "egg");
-            }
-        }
-
-        if (Input.GetKeyDown("space"))
-        {
-            if (triggerName == "Bread")
-            {
-
-            }
-
-            if (triggerName == "Stove")
-            {
-
-            }
-
-            if (triggerName == "Receivers")
-            {
-                if (heldItemName == "toastSlice")
-                {
-                    Destroy(heldItem);
-                    heldItemName = "";
-                }
-            }
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
         triggerName = other.name;
+        Debug.Log(triggerName);
     }
 
     private void OnTriggerExit(Collider other)
